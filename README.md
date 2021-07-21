@@ -1,27 +1,17 @@
 # POC_Keycloak_LDAP-AD-
 
-Poc Keycloak utilizando o LDAP para simular um Active Directory
+Poc Keycloak utilizando o LDAP para simular um Active Directory (escopo Windows)
 
-## kong
+O objetivo dessa POC é simular um Active directory utilizando a ferramenta LDAP admin e integrar com o Keycloak que é uma ferramenra de Single Sign on (SSO), e o MySQL que é para armazenarmos as credenciais.
 
-# Instalação do Kong no Docker Compose
+### Instalando LDAP, Keycloak e mysql
 
-
-### O que é Kong?
-
-Você pode encontrar a distribuição oficial do Docker para Kong em [https://hub.docker.com/_/kong](https://hub.docker.com/_/kong).
-
-### Instalando o kong
-
-1 - Primeiro vamos subir o Cassandra, execute o arquivo dockercompose.yaml em sua IDE de prefenrencia ou até mesmo no seu terminal utilizando o comando **docker-compose up -d kong-database**, para garantirmos que não haverá nenhum conflito entre o Kong e o banco de dados Cassandra. Para validar se o container esta up e funcional utilizando o comando **docker ps** ou **docker-compose ps**. 
-
-O resultado deve ser igual ou semelhante a imagem abaixo.
-
-![Cassandra no ar](https://user-images.githubusercontent.com/68164552/111360321-59bb4580-866b-11eb-9055-8943b82ac01a.jpg)
-
-2 - Após esse passo, execute o arquivo dockercompose.yaml em sua IDE de preferência ou até mesmo no seu terminal utilizando o comando **docker-compose up -d** , isso executará o deploy dos demais containers.
+1 - Vamos instalar as aplicações, então, execute o arquivo dockercompose.yaml em sua IDE de preferência ou até mesmo no seu terminal utilizando o comando **docker-compose up -d** , isso executará o deploy das aplicações.
 
 Para validar se os containers estão up e funcionais execute o comando **docker ps** ou **docker-compose ps**. 
+
+![image](https://user-images.githubusercontent.com/68164552/126538928-ac4489c3-be49-476d-8b40-58569687fbc3.png)
+
 
 ![Containers no ar](https://user-images.githubusercontent.com/68164552/111360865-04336880-866c-11eb-9a9d-79f2f3255f58.jpg)
 
