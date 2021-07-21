@@ -12,82 +12,74 @@ Para validar se os containers estão up e funcionais execute o comando **docker 
 
 ![image](https://user-images.githubusercontent.com/68164552/126538928-ac4489c3-be49-476d-8b40-58569687fbc3.png)
 
+Feito todos esses passo vamos validar se a aplicação do keycloak esta no ar.
 
-![Containers no ar](https://user-images.githubusercontent.com/68164552/111360865-04336880-866c-11eb-9a9d-79f2f3255f58.jpg)
+### Validando Keycloak
 
-Feito todos esses passo vamos validar a funcionalidade do Kong.
+Ao executar vá em seu navegador de preferência e digite: localhost:8080
 
-### Validando interfaces kong
+O esperado é acessarmos a tela de adm do Keycloak.
 
-Ao executar vá no navegador e digite: localhost:8000 (Api do kong) e localhost:8001 (kong backend ) 
-
-Segue abaixo o que é esperado em cada um desses endereços.
-
-localhost:8000 - (Endereço onde o Kong responde)
-
-![8080](https://user-images.githubusercontent.com/68164552/111361764-d13da480-866c-11eb-8d08-7326b1cd361f.jpg)
-
-localhost:8001 (kong backend - API de administração )
-
-![8001](https://user-images.githubusercontent.com/68164552/111361891-f500ea80-866c-11eb-9e59-6eab856b7cf7.jpg)
-
-### Configurando o Konga
-
-Para acessar o konga (interface grafica do kong) no seu navegador digite localhost:1337
-
-![Konga](https://user-images.githubusercontent.com/68164552/111362832-08f91c00-866e-11eb-96c9-6d2e3ba2e00a.jpg)
-
-Defina um usuário e senha
-
-![user](https://user-images.githubusercontent.com/68164552/111369869-4d88b580-8676-11eb-873f-e3807178b1c7.jpg)
-
-Na tela de configuração defina as configurações abaixo
-
-Name: kong
-
-Kong Admin URL: http://kong:8001
-
-![kong konfig](https://user-images.githubusercontent.com/68164552/111371214-df44f280-8677-11eb-9ebf-d81ca23ac2b6.jpg)
+![image](https://user-images.githubusercontent.com/68164552/126539682-faf8a698-78c5-4811-9d31-5cf65d5d0861.png)
 
 
-Após essas configurações é esperado um dashboard da interface Konga.
+### Configurando o Keycloak
 
-![intkonga](https://user-images.githubusercontent.com/68164552/111363618-06e38d00-866f-11eb-9ceb-ae7910777962.jpg)
+Mediante ao acesso acima clicamos em console administration
 
-Pronto! O Kong esta pronto para ser usado
+![image](https://user-images.githubusercontent.com/68164552/126540129-49228d2d-554a-4387-8107-1bccf48515ce.png)
 
-### Importando as Api's no Konga
+Defina um usuário com email e senha
 
-1 - Vamos importar as API'S do Kong no menu lateral esquerdo, opção Snapshots.
-2 - Clique em import from file
-3 - Selecione o arquivo configs_konga
+![image](https://user-images.githubusercontent.com/68164552/126541518-daa8efb1-0680-4a5b-a362-4260e135fe01.png)
 
-![Snapshotkonga](https://user-images.githubusercontent.com/68164552/111372125-ff28e600-8678-11eb-9f0a-f4adb8b085d7.jpg)
+Após logar na ferramenta na tela de configuração defina as configurações para o REALM
 
-4 - Clique em details, depois restore e selecione todas as opções.
+Obs: Como é uma POC estamos utilizando o REALM master, porém é recomendavel que você crie um novo.
 
-![snapshotrestore](https://user-images.githubusercontent.com/68164552/111372818-e66d0000-8679-11eb-92c6-808a0bb56cc4.jpg)
+![image](https://user-images.githubusercontent.com/68164552/126544122-34cdf42f-3c9f-4918-8eef-4b9c594f7dbf.png)
 
-5 - Clique em import objects.
+Em user federation execute as seguintes configurações.
 
-### Validando configurações
+![image](https://user-images.githubusercontent.com/68164552/126543939-0a6cac77-aa8c-4f36-aa47-6c617e4a2cc1.png)
 
-Agora vá na aba service e veja se o backend esta configurado.
+Obs: algumas senhas estão no arquivo de Manifesto "dockercompose.yaml"
 
-![snapshotrestore](https://user-images.githubusercontent.com/68164552/111373313-832f9d80-867a-11eb-8030-476a1088ae2a.jpg)
+### Iniciando a configuração do servidor LDAP
 
-Valide se as rotas estão ok também.
+1 - Vamos baixar o binário portable do LDAP utilizando o seguinte link http://www.ldapadmin.org/download/ldapadmin.html
+2 - Execute o Binário como admonistrador. abaixo o esperado.
+![image](https://user-images.githubusercontent.com/68164552/126544663-36868905-a078-48bb-a21b-fe685558a84f.png)
+3 - Clique na imagem do servidor.
+![image](https://user-images.githubusercontent.com/68164552/126545015-de64fc97-6b26-4123-9da9-6d2f59a89ded.png)
 
-![routes](https://user-images.githubusercontent.com/68164552/111375134-ace9c400-867c-11eb-86ec-d2b47e7b19d5.jpg)
+4 - Defina as seguintes configurações e clique em test connect.
+![image](https://user-images.githubusercontent.com/68164552/126545169-b25d8b6d-4092-4370-b644-7061e0a34e1d.png)
 
+5 - Após Isso o Keycloak esta integrado com o LDAP.
+
+### Validando configurações e criando um usuário
+
+Por enquanto estamos somente como o usuário admin.
+
+![image](https://user-images.githubusercontent.com/68164552/126545814-c6f1d2d1-42a7-42b2-aa76-f61bcd3de1d1.png)
+
+Vamos criar um usuário no LDAP e sincronizar com o Keycloak 
+
+![image](https://user-images.githubusercontent.com/68164552/126547013-16f08480-2cf6-4b07-8300-fba6240574f9.png)
+
+Usuário criado.
+
+![image](https://user-images.githubusercontent.com/68164552/126549969-5743f077-e9f2-4da5-bf22-d26cd650de93.png)
+
+![image](https://user-images.githubusercontent.com/68164552/126550028-25a60378-704f-45f8-a273-48d5dabca420.png)
+
+Agora o usuário precisa aparecer no Keycloak, retornamos no Keycloak em user federation clicamos em LDAP, e clicamos em "Syncronize changed users"
+
+![image](https://user-images.githubusercontent.com/68164552/126550558-5d2cffd6-c85c-42d1-bf04-ee8c5f14455b.png)
+ 
+ E verificamos o usuário Leonardo cadastrado no keycloak.
+ 
+ ![image](https://user-images.githubusercontent.com/68164552/126550692-8973e97b-971e-4a4a-bb5b-40098e445cc1.png)
 
 Pronto! Tudo ok.
-
-Obs: O arquivo postman_collection_v1 estão configuradas todos os metodos das API'S de Mock!
-
-A documentação de Kong pode ser encontrada em [https://docs.konghq.com/][kong-docs-url]
-
-##DOCS adicionais
-
-[kong-site-url]: https://konghq.com/
-[kong-docs-url]: https://docs.konghq.com
