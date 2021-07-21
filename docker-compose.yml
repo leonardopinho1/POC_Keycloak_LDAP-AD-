@@ -1,0 +1,64 @@
+version: '2.2'
+services:
+  ldap:
+    image: minkwe/389ds:latest
+    hostname: sso.example.com
+    networks:
+      sso:
+        aliases:
+          - sso.example.com
+    volumes:
+      - ./data:/var/lib/dirsrv:Z
+      - ./config:/etc/dirsrv:Z
+      - ./logs:/var/log/dirsrv:Z
+      - ./certs:/certs:Z
+    environment:
+      DIR_SUFFIX: dc=sso,dc=example,dc=com
+      DIR_ADMIN_USERNAME: "admin"
+      DIR_MANAGER_PASSWORD: "Mudar123!"
+      DIR_ADMIN_UID: "15000"
+      DIR_USERS_HOME: "/users"
+    ports:
+      - 8389:389
+      - 8636:636
+    restart: always
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - sso
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: password
+  keycloak:
+      image: quay.io/keycloak/keycloak:latest
+      environment:
+        DB_VENDOR: MYSQL
+        DB_ADDR: mysql
+        DB_DATABASE: keycloak
+        DB_USER: keycloak
+        DB_PASSWORD: password
+        KEYCLOAK_USER: admin
+        KEYCLOAK_PASSWORD: Pa55w0rd
+        PROXY_ADDRESS_FORWARDING: "true"
+        # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the MySQL JDBC driver documentation in order to use it.
+        #JDBC_PARAMS: "connectTimeout=30000&autoReconnect=true&useSSL=false"
+      ports:
+        - 8080:8080
+        - 8443:8443
+        - 9990:9990
+      networks:
+        - sso
+      depends_on:
+        - mysql
+      # volumes:
+      #   - ./certs/cacerts:/etc/pki/ca-trust/extracted/java/cacerts
+networks:
+  sso:
+
+volumes:
+  mysql_data:
+    driver: local
