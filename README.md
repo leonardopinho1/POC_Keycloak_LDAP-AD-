@@ -20,8 +20,7 @@ Ao executar vá em seu navegador de preferência e digite: localhost:8080
 
 O esperado é acessarmos a tela de adm do Keycloak.
 
-![image](https://user-images.githubusercontent.com/68164552/126539682-faf8a698-78c5-4811-9d31-5cf65d5d0861.png)
-
+![image](https://user-images.githubusercontent.com/68164552/126784437-cde175fa-a761-4615-a59a-573e88658d81.png)
 
 ### Configurando o Keycloak
 
